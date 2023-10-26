@@ -1,5 +1,6 @@
 Feature: login feature
 
   Scenario Outline: login to platform
-    Given open Login page
-    Given blasss
+    Given Open Login page
+    Then I login by users with different
+
