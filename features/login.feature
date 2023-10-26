@@ -12,4 +12,5 @@ Feature: login feature
   Scenario: Login to paltform by user
     Given Open paltform
     Given I login to platform by user loginUserTest@i.ua
+    Given bla
 
