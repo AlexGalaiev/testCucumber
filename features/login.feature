@@ -4,7 +4,7 @@ Feature: login feature
     Given Open paltform
     Then I go to create user accont form
     Then I fill registartion form with random credentials
-    And Should be text on page <msg>
+    Then Should be text on page "<msg>"
     Examples:
-    |msg|
+    |msg                                               |
     |Thank you for registering with Main Website Store.|

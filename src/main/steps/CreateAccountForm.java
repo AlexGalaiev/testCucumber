@@ -3,6 +3,7 @@ package steps;
 import com.codeborne.selenide.Browser;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import net.datafaker.Faker;
@@ -32,5 +33,10 @@ public class CreateAccountForm {
         $(".password #password").setValue("Test123!");
         $("#password-confirmation").setValue("Test123!");
         $(".submit").click();
+        $("#maincontent").shouldHave(Condition.visible);
+    }
+    @Then("Should be text on page {string}")
+    public void shouldBeeText(String string){
+        $(".message-success").getText().equals(string);
     }
 }
