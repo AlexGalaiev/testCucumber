@@ -39,4 +39,12 @@ public class CreateAccountForm {
     public void shouldBeeText(String string){
         $(".message-success").getText().equals(string);
     }
+
+    @Given("I login to platform by user {string}")
+    public void loginToPlatformByUser(String string){
+        $("#email").setValue(string);
+        $("[name='login[password]']").setValue("Test123!");
+        $(".action-login").click();
+        $("#maincontent").shouldHave(Condition.visible);
+    }
 }
