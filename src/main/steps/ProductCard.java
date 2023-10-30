@@ -1,6 +1,7 @@
 import com.codeborne.selenide.Condition;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -11,9 +12,9 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
 public class ProductCard {
-    @Given("I go to page of product")
-    public void iGoToPageOfProduct() {
-        open("https://magento.softwaretestingboard.com/breathe-easy-tank.html");
+    @Given("I go to page of product {string}")
+    public void iGoToPageOfProduct(String productPage) {
+        open(productPage);
         $(".fotorama-item").shouldHave(Condition.visible);
 
     }
@@ -25,7 +26,21 @@ public class ProductCard {
     @Given("User click on {string}")
     public void userClickOn(String arg0) {
         $(".size .swatch-attribute-options")
-                .$("//*[contains(text(), '" + arg0 + "')]")
+                .$(By.cssSelector("[option-label='"+arg0+"']"))
                 .click();
+    }
+
+    @Given("User chose {string}")
+    public void userChoos(String color) {
+        $(".color .swatch-attribute-options")
+                .$(By.cssSelector("[aria-label='"+color+"']"))
+                .click();
+    }
+
+    @Then("User check what {string} is displayed")
+    public void userCheckWhatIsDisplayed(String stringColor) {
+        $(".color .swatch-attribute-selected-option")
+                .shouldHave(Condition.text(stringColor));
+
     }
 }

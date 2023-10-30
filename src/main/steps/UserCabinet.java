@@ -1,5 +1,6 @@
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import net.datafaker.Faker;
@@ -10,12 +11,6 @@ import static com.codeborne.selenide.Selenide.open;
 
 public class UserCabinet {
     Faker fafeData = new Faker();
-    @Given("Open platform")
-    public void openPlatform() {
-        open("https://magento.softwaretestingboard.com/");
-        Configuration.browserSize = "1920x1080";
-        $("#maincontent").shouldHave(Condition.visible);
-    }
     @Then("I go to create user account form")
     public void iGoToCreateUserAccountForm() {
         $(By.linkText("Create an Account")).click();
@@ -40,9 +35,18 @@ public class UserCabinet {
 
     @Given("I login to platform by user {string}")
     public void iLoginToPlatformByUser(String arg0) {
+        $(".panel .authorization-link").click();
+        $(".login-container .block-customer-login").shouldHave(Condition.visible);
         $("#email").setValue(arg0);
         $("[name='login[password]']").setValue("Test123!");
-        $(".action-login").click();
+        $(".actions-toolbar .login").click();
         $("#maincontent").shouldHave(Condition.visible);
+    }
+
+    @And("Next string must displayed {string}")
+    public void nextStringMustDisplayed(String stringValue) {
+        $(".panel .logged-in")
+                .shouldBe(Condition.visible)
+                .shouldHave(Condition.text(stringValue));
     }
 }
