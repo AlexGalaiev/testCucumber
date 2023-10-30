@@ -23,3 +23,13 @@ Feature: Test of product card
      |Purple|
      |White |
      |Yellow|
+
+   Scenario: Сheck adding product to Wishlist
+     Given I login to platform by user "loginUserTest@i.ua"
+     Given I go to My Account and switch to My Wishlist
+     Then Wishlist must be empty
+     Given I go to page of product "https://magento.softwaretestingboard.com/breathe-easy-tank.html"
+     Then I add product to wishlist
+     And I check products in Wishlist
+
+

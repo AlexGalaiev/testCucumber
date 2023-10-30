@@ -1,15 +1,18 @@
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.ex.ElementNotFound;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 
 import java.util.List;
 
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.*;
 
 public class ProductCard {
     @Given("I go to page of product {string}")
@@ -41,6 +44,25 @@ public class ProductCard {
     public void userCheckWhatIsDisplayed(String stringColor) {
         $(".color .swatch-attribute-selected-option")
                 .shouldHave(Condition.text(stringColor));
+    }
+    @Then("Wishlist must be empty")
+    public void wishlistMustBeEmpty() {
+        try {
+            SelenideElement itemField = $(By.xpath("//form[@class=\"form-wishlist-items\"]/preceding-sibling::div[1]/div[@class='pager']"));
+            if (itemField.is(Condition.visible)){
+                ElementsCollection deleteBtns = $$(".actions-secondary .delete");
+                for(SelenideElement deleteBtn:deleteBtns){
+                    deleteBtn.click();
+                }
+            }
+        } catch (StaleElementReferenceException elementNotFound) {
+            $("#wishlist-view-form").shouldHave(Condition.text("You have no items in your wish list."));
+        }
+    }
 
+    @Then("I add product to wishlist")
+    public void iAddProductToWishlist() {
+        $(".product-addto-links .towishlist").click();
+        $(".form-wishlist-items .product-item").shouldHave(Condition.visible);
     }
 }

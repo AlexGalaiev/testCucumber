@@ -49,4 +49,18 @@ public class UserCabinet {
                 .shouldBe(Condition.visible)
                 .shouldHave(Condition.text(stringValue));
     }
+
+    @Given("I go to My Account and switch to My Wishlist")
+    public void iGoToMyAccountAndSwitchToMyWishlist() {
+        $(".panel .header .customer-welcome").click();
+        $(".active .wishlist").click();
+        $(".page-title-wrapper").shouldHave(Condition.visible);
+    }
+
+    @And("I check products in Wishlist")
+    public void iCheckProductsInWishlist() {
+        $(".form-wishlist-items .product-item").shouldHave(Condition.visible);
+
+        $(".product-item-details .delete").click();
+    }
 }
