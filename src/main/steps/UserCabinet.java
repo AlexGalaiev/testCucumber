@@ -60,7 +60,6 @@ public class UserCabinet {
     @And("I check products in Wishlist")
     public void iCheckProductsInWishlist() {
         $(".form-wishlist-items .product-item").shouldHave(Condition.visible);
-
         $(".product-item-details .delete").click();
     }
 }
