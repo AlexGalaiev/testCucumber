@@ -3,9 +3,11 @@ import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.ElementNotFound;
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.checkerframework.checker.units.qual.C;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -18,7 +20,7 @@ public class ProductCard {
     @Given("I go to page of product {string}")
     public void iGoToPageOfProduct(String productPage) {
         open(productPage);
-        $(".fotorama-item").shouldHave(Condition.visible);
+        $(".base").shouldHave(Condition.visible);
 
     }
     @When("Users checks correct view of {string}")
@@ -64,5 +66,33 @@ public class ProductCard {
     public void iAddProductToWishlist() {
         $(".product-addto-links .towishlist").click();
         $(".form-wishlist-items .product-item").shouldHave(Condition.visible);
+    }
+
+    @Given("I buy product with {string} {string} {string}")
+    public void iBuyProductWith(String size, String color, String amount) {
+        $("[option-label='"+color+"']").click();
+        $("[option-tooltip-value='"+size+"']").click();
+        $("#qty").clear();
+        $("#qty").sendKeys(amount);
+        $("#product-addtocart-button").click();
+        $(".message-success").shouldHave(Condition.visible)
+                .shouldHave(Condition.text("You added Breathe-Easy Tank to your "));
+    }
+
+    @And("I check minicard with preconditions {string} {string} {string} {string}")
+    public void iCheckMinicardWithPreconditions(String size, String color, String amount, String price) {
+        $(".showcart").scrollTo().click();
+        SelenideElement miniCart = $("#minicart-content-wrapper");
+        miniCart.shouldHave(Condition.visible);
+        $(By.xpath("//ol[@class='minicart-items']//div[contains(@class, 'options')]")).click();
+        $(By.xpath("//ol[@class='minicart-items']//dd[contains(@class, values)][1]"))
+                .shouldHave(Condition.text(size));
+        $(By.xpath("//ol[@class='minicart-items']//dd[contains(@class, values)][2]"))
+                .shouldHave(Condition.text(color));
+        miniCart.$(".count").shouldHave(Condition.text(amount));
+        miniCart.$(".subtotal .price").shouldHave(Condition.text(price));
+        $("#top-cart-btn-checkout").click();
+
+
     }
 }
